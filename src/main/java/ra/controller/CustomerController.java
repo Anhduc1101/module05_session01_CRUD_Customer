@@ -3,9 +3,13 @@ package ra.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import ra.model.entity.Customer;
 import ra.model.service.CustomerService;
+
 
 import java.util.List;
 
@@ -13,50 +17,48 @@ import java.util.List;
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
-//  show bang du lieu
+
+    //  show list
     @GetMapping("/")
-    public String getList(Model model) {
+    public String list_customer(Model model) {
         List<Customer> customers = customerService.findAll();
-        model.addAttribute("customers", customers);
-        return "/customer";
+        model.addAttribute("list", customers);
+        return "customer";
     }
 
-//  them
-    @GetMapping("/add-customer")
-    public String create(Model model) {
+    @GetMapping("add")
+    public String add(Model model){
         Customer customer = new Customer();
-        model.addAttribute("customer", customer);
+        model.addAttribute("newCus",customer);
         return "add-customer";
     }
 
-    @PostMapping("/add-customer")
-    public String add_customer(@ModelAttribute("customers") Customer customer) {
-        if (customerService.saveOrUpdate(customer)) {
-            return "redirect:/";
-        }
-        return "redirect:/add-customer";
-    }
-
-//  sua
-    @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, Model model) {
-        Customer customer = customerService.findById(id);
-        model.addAttribute("cus", customer);
-        return "edit_customer";
-    }
-
-    @PostMapping("/update")
-    public String update(@ModelAttribute("cus") Customer customer ){
+    @PostMapping("add")
+    public String add(@ModelAttribute("newCus") Customer customer){
         if (customerService.saveOrUpdate(customer)){
         return "redirect:/";
         }
-        return "redirect:/edit/"+customer.getId();
+        return "redirect:/add";
     }
 
-//  xoa
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id){
         customerService.deleteById(id);
         return "redirect:/";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Long id, Model model){
+        Customer customer = customerService.findById(id);
+        model.addAttribute("editCus",customer);
+        return "edit_customer";
+    }
+
+    @PostMapping("update")
+    public String update(@ModelAttribute("editCus") Customer customer){
+        if (customerService.saveOrUpdate(customer)){
+            return "redirect:/";
+        }
+        return "edit_customer";
     }
 }

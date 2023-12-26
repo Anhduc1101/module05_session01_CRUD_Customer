@@ -2,9 +2,10 @@ package ra.model.entity;
 
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-@Table(name = "customer")
+
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +15,8 @@ public class Customer {
     private String name;
     private String email;
     private String address;
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.REMOVE)
+    private Set<Product> products;
 
     public Customer() {
     }

@@ -23,26 +23,27 @@
 <body>
 <form>
     <div>
-        <a th:href="@{/add}" class="btn btn-secondary " >Add Customer</a>
+        <a th:href="@{/add-product}" class="btn btn-secondary " >Add Product</a>
     </div>
     <table>
         <thead>
         <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Address</th>
+            <th>Pro.Name</th>
+            <th>Pro.Price</th>
+            <th>Customer</th>
+<!--            <th>Address</th>-->
             <th colspan="2">Action</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="item : ${list}">
+        <tr th:each="item : ${products}">
             <td th:text="${item.id}"></td>
-            <td th:text="${item.name}"></td>
-            <td th:text="${item.email}"></td>
-            <td th:text="${item.address}"></td>
-            <td><a th:href="@{/edit/{id}(id=${item.id})}">Edit</a></td>
-            <td><a th:href="@{/delete/{id}(id=${item.id})}">Delete</a></td>
+            <td th:text="${item.productName}"></td>
+            <td th:text="${item.customer.name}"></td>
+<!--            <td th:text="${item.address}"></td>-->
+            <td><a th:href="@{/edit-product/{id}(id=${item.id})}">Edit</a></td>
+            <td><a th:href="@{/delete-product/{id}(id=${item.id})}">Delete</a></td>
         </tr>
         </tbody>
     </table>
